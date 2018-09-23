@@ -6,4 +6,12 @@
 //   font-family: "Ringside Narrow SSm" !important;
 // }
 
-@import 'mastodon-light';
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,700|IBM+Plex+Sans:400,700');
+@import 'mastodon-light/variables';
+
+$font-sans-serif: 'IBM Plex Sans';
+$font-display: 'IBM Plex Sans';
+$font-monospace: 'IBM Plex Mono';
+
+@import 'application';
+@import 'mastodon-light/diff';
