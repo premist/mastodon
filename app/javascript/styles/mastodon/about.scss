@@ -16,7 +16,7 @@ $small-breakpoint: 960px;
 }
 
 .rich-formatting {
-  font-family: 'mastodon-font-sans-serif', sans-serif;
+  font-family: $font-family, sans-serif;
   font-size: 16px;
   font-weight: 400;
   font-size: 16px;
@@ -31,7 +31,7 @@ $small-breakpoint: 960px;
 
   p,
   li {
-    font-family: 'mastodon-font-sans-serif', sans-serif;
+    font-family: $font-family, sans-serif;
     font-size: 16px;
     font-weight: 400;
     font-size: 16px;
@@ -70,7 +70,7 @@ $small-breakpoint: 960px;
     color: $secondary-text-color;
 
     small {
-      font-family: 'mastodon-font-sans-serif', sans-serif;
+      font-family: $font-family, sans-serif;
       display: block;
       font-size: 18px;
       font-weight: 400;
@@ -180,7 +180,7 @@ $small-breakpoint: 960px;
 
   &__section {
     flex: 1 0 0;
-    font-family: 'mastodon-font-sans-serif', sans-serif;
+    font-family: $font-family, sans-serif;
     font-size: 16px;
     line-height: 28px;
     color: $primary-text-color;
@@ -450,7 +450,7 @@ $small-breakpoint: 960px;
 
   p,
   li {
-    font-family: 'mastodon-font-sans-serif', sans-serif;
+    font-family: $font-family, sans-serif;
     font-size: 16px;
     font-weight: 400;
     font-size: 16px;
@@ -507,7 +507,7 @@ $small-breakpoint: 960px;
     color: $secondary-text-color;
 
     small {
-      font-family: 'mastodon-font-sans-serif', sans-serif;
+      font-family: $font-family, sans-serif;
       display: block;
       font-size: 18px;
       font-weight: 400;
@@ -619,7 +619,7 @@ $small-breakpoint: 960px;
 
       .hero .heading {
         padding-bottom: 20px;
-        font-family: 'mastodon-font-sans-serif', sans-serif;
+        font-family: $font-family, sans-serif;
         font-size: 16px;
         font-weight: 400;
         font-size: 16px;
@@ -743,7 +743,7 @@ $small-breakpoint: 960px;
   .about-short {
     background: darken($ui-base-color, 4%);
     padding: 50px 0 30px;
-    font-family: 'mastodon-font-sans-serif', sans-serif;
+    font-family: $font-family, sans-serif;
     font-size: 16px;
     font-weight: 400;
     font-size: 16px;
@@ -1012,7 +1012,7 @@ $small-breakpoint: 960px;
     display: flex;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    font-family: 'mastodon-font-sans-serif', sans-serif;
+    font-family: $font-family, sans-serif;
     font-size: 13px;
     line-height: 18px;
     font-weight: 400;
