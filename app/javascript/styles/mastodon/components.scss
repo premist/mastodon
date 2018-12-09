@@ -631,11 +631,13 @@
 
 .status__content,
 .reply-indicator__content {
+  position: relative;
   font-size: 15px;
   line-height: 20px;
   word-wrap: break-word;
   font-weight: 400;
   overflow: hidden;
+  text-overflow: ellipsis;
   white-space: pre-wrap;
   padding-top: 2px;
   color: $primary-text-color;
@@ -721,6 +723,26 @@
   }
 }
 
+.status__content.status__content--collapsed {
+  max-height: 20px * 15; // 15 lines is roughly above 500 characters
+}
+
+.status__content__read-more-button {
+  display: block;
+  font-size: 15px;
+  line-height: 20px;
+  color: lighten($ui-highlight-color, 8%);
+  border: 0;
+  background: transparent;
+  padding: 0;
+  padding-top: 8px;
+
+  &:hover,
+  &:active {
+    text-decoration: underline;
+  }
+}
+
 .status__content__spoiler-link {
   display: inline-block;
   border-radius: 2px;
@@ -779,7 +801,7 @@
   padding: 8px 10px;
   padding-left: 68px;
   position: relative;
-  min-height: 48px;
+  min-height: 54px;
   border-bottom: 1px solid lighten($ui-base-color, 8%);
   cursor: default;
 
@@ -801,8 +823,9 @@
     margin-top: 8px;
   }
 
-  &.status-direct {
+  &.status-direct:not(.read) {
     background: lighten($ui-base-color, 8%);
+    border-bottom-color: lighten($ui-base-color, 12%);
   }
 
   &.light {
@@ -1109,6 +1132,18 @@
     display: inline-block;
     vertical-align: middle;
     margin-right: 5px;
+  }
+
+  &-composite {
+    @include avatar-radius();
+    overflow: hidden;
+
+    & > div {
+      @include avatar-radius();
+      float: left;
+      position: relative;
+      box-sizing: border-box;
+    }
   }
 }
 
@@ -1634,6 +1669,7 @@ a.account__display-name {
   padding: 4px 0;
   border-radius: 4px;
   box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
+  z-index: 9999;
 
   ul {
     list-style: none;
@@ -1811,7 +1847,7 @@ a.account__display-name {
 }
 
 .column {
-  width: 330px;
+  width: 350px;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -2525,6 +2561,9 @@ a.status-card {
   display: block;
   margin-top: 5px;
   font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .status-card__image {
@@ -2547,6 +2586,31 @@ a.status-card {
   .status-card__title {
     white-space: inherit;
   }
+}
+
+.status-card.compact {
+  border-color: lighten($ui-base-color, 4%);
+
+  &.interactive {
+    border: 0;
+  }
+
+  .status-card__content {
+    padding: 8px;
+    padding-top: 10px;
+  }
+
+  .status-card__title {
+    white-space: nowrap;
+  }
+
+  .status-card__image {
+    flex: 0 0 60px;
+  }
+}
+
+a.status-card.compact:hover {
+  background-color: lighten($ui-base-color, 4%);
 }
 
 .status-card__image-image {
@@ -3009,17 +3073,12 @@ a.status-card {
   line-height: 24px;
 }
 
-.setting-toggle__label,
-.setting-meta__label {
+.setting-toggle__label {
   color: $darker-text-color;
   display: inline-block;
   margin-bottom: 14px;
   margin-left: 8px;
   vertical-align: middle;
-}
-
-.setting-meta__label {
-  float: right;
 }
 
 .empty-column-indicator,
