@@ -53,6 +53,7 @@ class Api::V1::StatusesController < Api::BaseController
   def create
     @status = PostStatusService.new.call(
       current_user.account,
+      created_at: status_params[:created_at], # temporary; for migration
       text: status_params[:status],
       thread: @thread,
       media_ids: status_params[:media_ids],
@@ -121,6 +122,7 @@ class Api::V1::StatusesController < Api::BaseController
 
   def status_params
     params.permit(
+      :created_at, # temporary; for migration
       :status,
       :in_reply_to_id,
       :sensitive,
