@@ -6,10 +6,6 @@ on:
       - 'baram'
     tags:
       - '*'
-  pull_request:
-    paths:
-      - .github/workflows/build-image.yml
-      - Dockerfile
 
 env:
   REGISTRY: ghcr.io
