@@ -1,3 +1,7 @@
 default: styles/application.scss
 contrast: styles/contrast.scss
 mastodon-light: styles/mastodon-light.scss
+
+mastodon-bird-ui: styles/mastodon-bird-ui-light.scss
+mastodon-bird-ui-light: styles/mastodon-bird-ui-light.scss
+mastodon-bird-ui-contrast: styles/mastodon-bird-ui-contrast.scss
