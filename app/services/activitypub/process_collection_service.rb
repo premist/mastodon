@@ -54,22 +54,22 @@ class ActivityPub::ProcessCollectionService < BaseService
 
   def spam_suspected_actor?
     account_stat = AccountStat.find_by(account_id: @account.id)
-    zero_following_followers = (account_stat.following_count == 0 && account_stat.followers_count == 0)
+    zero_following_followers = (account_stat.following_count.zero? && account_stat.followers_count.zero?)
 
     # only interested in total, so use consistent date for maximizing cache hits
     time = Time.zone.now.beginning_of_month
 
     instance_follows = Admin::Metrics::Measure.retrieve(
-      "instance_follows", time, time,
-      ActionController::Parameters.new({ instance_follows: { domain: @account.domain }})
+      'instance_follows', time, time,
+      ActionController::Parameters.new({ instance_follows: { domain: @account.domain } })
     ).first.total
 
     instance_followers = Admin::Metrics::Measure.retrieve(
-      "instance_followers", time, time,
-      ActionController::Parameters.new({ instance_followers: { domain: @account.domain }})
+      'instance_followers', time, time,
+      ActionController::Parameters.new({ instance_followers: { domain: @account.domain } })
     ).first.total
 
-    no_instance_interaction = (instance_follows == 0 && instance_followers == 0)
+    no_instance_interaction = (instance_follows.zero? && instance_followers.zero?)
 
     if no_instance_interaction && zero_following_followers
       Rails.logger.info("[Spam Filter] Skipped processing ActivityPub items from #{@account.pretty_acct}")
