@@ -56,14 +56,16 @@ class ActivityPub::ProcessCollectionService < BaseService
     account_stat = AccountStat.find_by(account_id: @account.id)
     zero_following_followers = (account_stat.following_count == 0 && account_stat.followers_count == 0)
 
-    # only interested in total, so use smallest possible period
+    # only interested in total, so use consistent date for maximizing cache hits
+    time = Time.zone.now.beginning_of_month
+
     instance_follows = Admin::Metrics::Measure.retrieve(
-      "instance_follows", Time.zone.now, Time.zone.now,
+      "instance_follows", time, time,
       ActionController::Parameters.new({ instance_follows: { domain: @account.domain }})
     ).first.total
 
     instance_followers = Admin::Metrics::Measure.retrieve(
-      "instance_followers", Time.zone.now, Time.zone.now,
+      "instance_followers", time, time,
       ActionController::Parameters.new({ instance_followers: { domain: @account.domain }})
     ).first.total
 
