@@ -18,6 +18,7 @@ class ActivityPub::ProcessCollectionService < BaseService
     end
 
     return if !supported_context? || (different_actor? && verify_account!.nil?) || suspended_actor? || @account.local?
+    return if spam_suspected_actor?
     return unless @account.is_a?(Account)
 
     if @json['signature'].present?
@@ -49,6 +50,31 @@ class ActivityPub::ProcessCollectionService < BaseService
 
   def suspended_actor?
     @account.suspended? && !activity_allowed_while_suspended?
+  end
+
+  def spam_suspected_actor?
+    account_stat = AccountStat.find_by(account_id: @account.id)
+    zero_following_followers = (account_stat.following_count == 0 && account_stat.followers_count == 0)
+
+    # only interested in total, so use smallest possible period
+    instance_follows = Admin::Metrics::Measure.retrieve(
+      "instance_follows", Time.zone.now, Time.zone.now,
+      ActionController::Parameters.new({ instance_follows: { domain: @account.domain }})
+    ).first.total
+
+    instance_followers = Admin::Metrics::Measure.retrieve(
+      "instance_followers", Time.zone.now, Time.zone.now,
+      ActionController::Parameters.new({ instance_followers: { domain: @account.domain }})
+    ).first.total
+
+    no_instance_interaction = (instance_follows == 0 && instance_followers == 0)
+
+    if no_instance_interaction && zero_following_followers
+      Rails.logger.info("[Spam Filter] Skipped processing ActivityPub items from #{@account.pretty_acct}")
+      return true
+    end
+
+    false
   end
 
   def activity_allowed_while_suspended?
