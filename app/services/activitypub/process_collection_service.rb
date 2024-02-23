@@ -54,7 +54,8 @@ class ActivityPub::ProcessCollectionService < BaseService
 
   def spam_suspected_actor?
     account_stat = AccountStat.find_by(account_id: @account.id)
-    zero_following_followers = (account_stat.following_count.zero? && account_stat.followers_count.zero?)
+    followers = account_stat.followers_count
+    little_followers = (followers <= 3)
 
     # only interested in total, so use consistent date for maximizing cache hits
     time = Time.zone.now.beginning_of_month
@@ -71,8 +72,9 @@ class ActivityPub::ProcessCollectionService < BaseService
 
     no_instance_interaction = (instance_follows.zero? && instance_followers.zero?)
 
-    if no_instance_interaction && zero_following_followers
-      Rails.logger.info("[Spam Filter] Skipped processing ActivityPub items from #{@account.pretty_acct}")
+    if no_instance_interaction && little_followers
+      numbers = "followers=#{followers} instance_follows=#{instance_follows} instance_followers=#{instance_followers}"
+      Rails.logger.info("[Spam Filter] Skipped processing ActivityPub items from #{@account.pretty_acct} (#{numbers})")
       return true
     end
 
