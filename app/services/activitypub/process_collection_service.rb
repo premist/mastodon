@@ -55,7 +55,7 @@ class ActivityPub::ProcessCollectionService < BaseService
   def spam_suspected_actor?
     account_stat = AccountStat.find_by(account_id: @account.id)
     followers = account_stat.followers_count
-    little_followers = (followers <= 3)
+    little_followers = (followers <= 1)
 
     # only interested in total, so use consistent date for maximizing cache hits
     time = Time.zone.now.beginning_of_month
