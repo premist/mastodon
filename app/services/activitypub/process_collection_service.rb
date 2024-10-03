@@ -18,7 +18,7 @@ class ActivityPub::ProcessCollectionService < BaseService
     end
 
     return if !supported_context? || (different_actor? && verify_account!.nil?) || suspended_actor? || @account.local?
-    return if spam_suspected_actor?
+    # return if spam_suspected_actor?
     return unless @account.is_a?(Account)
 
     if @json['signature'].present?
