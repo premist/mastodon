@@ -49,6 +49,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def create_status
     return reject_payload! if unsupported_object_type? || non_matching_uri_hosts?(@account.uri, object_uri) || tombstone_exists? || !related_to_local_activity?
 
+    return reject_payload! if baram_spam_suspected?
+
     with_redis_lock("create:#{object_uri}") do
       return if delete_arrived_first?(object_uri) || poll_vote?
 
@@ -372,6 +374,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def converted_text
     linkify([@status_parser.title.presence, @status_parser.spoiler_text.presence, @status_parser.url || @status_parser.uri].compact.join("\n\n"))
+  end
+
+  def baram_spam_suspected?
+    @object['tag'].any? { |tag| tag['type'] == 'Hashtag' && tag['name'] == 'AS215935' }
   end
 
   def unsupported_media_type?(mime_type)
