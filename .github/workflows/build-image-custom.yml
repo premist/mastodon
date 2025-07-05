@@ -13,7 +13,7 @@ env:
 
 jobs:
   build-image:
-    runs-on: self-hosted
+    runs-on: arc-runner-set-baram
 
     permissions:
       contents: read
@@ -52,7 +52,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
 
   build-image-streaming:
-    runs-on: self-hosted
+    runs-on: arc-runner-set-baram
 
     permissions:
       contents: read
